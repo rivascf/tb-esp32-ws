@@ -9,13 +9,13 @@
 #include <ThingsBoard.h>
 
 #define SEALEVELPRESSURE_HPA (1013.25)
-#define SSID "HOME-8F16-2"
-#define SSID_PASSWORD "45164309"
-#define TBTOKEN "IEwjI1mYcMvHHEmTSDNx"
+#define SSID "XXXXXXXX"
+#define SSID_PASSWORD "XXXXXXX"
+#define TBTOKEN "Device token from ThingsBoard"
 
 Adafruit_BME280 bme;
 unsigned long delayTime;
-char thingsboardServer[] = "iotwit.info";
+char thingsboardServer[] = "nomre de dominio o ip";
 WiFiClient wifiClient;
 ThingsBoard tb(wifiClient);
 int status = WL_IDLE_STATUS;
@@ -26,17 +26,10 @@ void InitWiFi();
 void reconnect();
 
 void setup() {
-  Serial.begin(115200);
-  while (!Serial)
-    ; // time to get serial running
-
-  
-  Serial.println(F("ESP32s - BME280 - TB"));
+  Serial.println(F("BME280 -> ESP32s -> ThingsBoard"));
 
   unsigned status;
 
-  // default settings
-  // (you can also pass in a Wire library object like &Wire2)
   status = bme.begin();
   if (!status)
   {
@@ -84,9 +77,11 @@ void getAndSendTemperatureAndHumidityData()
   float humidity = bme.readHumidity();
   // Read temperature as Celsius (the default)
   float temperature = bme.readTemperature();
+  // Read pressure as hPa
+  float pressure = bme.readPressure() / 100.0F;
 
   // Check if any reads failed and exit early (to try again).
-  if (isnan(humidity) || isnan(temperature)) {
+  if (isnan(humidity) || isnan(temperature) || isnan(pressure)) {
     Serial.println("Failed to read from BME 280 sensor!");
     return;
   }
@@ -97,10 +92,15 @@ void getAndSendTemperatureAndHumidityData()
   Serial.print(" %\t");
   Serial.print("Temperature: ");
   Serial.print(temperature);
-  Serial.println(" *C ");
+  Serial.print(" *C ");
+  Serial.print("Pressure: ");
+  Serial.print(pressure);
+  Serial.println(" hPa ");
+
 
   tb.sendTelemetryFloat("temperature", temperature);
   tb.sendTelemetryFloat("humidity", humidity);
+  tb.sendTelemetryFloat("pressure", pressure);
 }
 
 void InitWiFi()
