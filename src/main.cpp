@@ -69,7 +69,7 @@ void loop() {
     reconnect();
   }
 
-  if ( millis() - lastSend > 1000 ) { // Update and send only after 1 seconds
+  if ( millis() - lastSend > delayTime ) { // Update and send only after [delayTime] seconds
     getAndSendTemperatureAndHumidityData();
     lastSend = millis();
   }
