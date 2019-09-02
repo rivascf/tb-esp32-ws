@@ -33,6 +33,7 @@ void setup() {
     while (1)
       ;
   }
+  Serial.println("BME280 found it!"); 
   Serial.print("SensorID is: 0x");
   Serial.println(bme.sensorID(), 16);
 
