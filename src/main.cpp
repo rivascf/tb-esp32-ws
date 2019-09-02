@@ -31,7 +31,7 @@ void setup() {
     ; // time to get serial running
 
   
-  Serial.println(F("BME280 test"));
+  Serial.println(F("ESP32s - BME280 - TB"));
 
   unsigned status;
 
@@ -63,8 +63,6 @@ void setup() {
 }
 
 void loop() {
-/*  printValues();
-  delay(delayTime);*/
   if ( !tb.connected() ) {
     reconnect();
   }
@@ -77,28 +75,6 @@ void loop() {
   tb.loop();
 
 }
-
-/*void printValues()
-{
-  Serial.print("Temperature = ");
-  Serial.print(bme.readTemperature());
-  Serial.println(" *C");
-
-  Serial.print("Pressure = ");
-
-  Serial.print(bme.readPressure() / 100.0F);
-  Serial.println(" hPa");
-
-  Serial.print("Approx. Altitude = ");
-  Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
-  Serial.println(" m");
-
-  Serial.print("Humidity = ");
-  Serial.print(bme.readHumidity());
-  Serial.println(" %");
-
-  Serial.println();
-}*/
 
 void getAndSendTemperatureAndHumidityData()
 {
