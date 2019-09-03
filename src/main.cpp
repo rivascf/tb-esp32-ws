@@ -26,6 +26,7 @@ void InitWiFi();
 void reconnect();
 
 void setup() {
+  Serial.begin(115200);
   Serial.println(F("BME280 -> ESP32s -> ThingsBoard"));
 
   unsigned status;
